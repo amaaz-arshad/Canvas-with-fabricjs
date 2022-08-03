@@ -14,7 +14,7 @@ function App() {
   const [contrastRange, setContrastRange] = useState<number>(100);
   // const [mousePressed, setMousePressed] = useState<boolean>(false);
   // const [image, setImage] = useState<string>(imageData[0]);
-  // const [Zoom, setZoom] = useState(1);
+  // const [zoom, setZoom] = useState(1);
   // const [canvas, setCanvas] = useState<fabric.Canvas>();
 
   let Zoom = 1;
@@ -71,7 +71,7 @@ function App() {
       //   crossOrigin: "anonymous",
       // }
     );
-    canvas.renderAll();
+    // canvas.renderAll();
 
     // var filter = new fabric.Image.filters.Brightness({
     //   brightness: 0.05,
@@ -150,11 +150,24 @@ function App() {
       //   crossOrigin: "anonymous",
       // }
     );
+
+    canvas.on("mouse:wheel", function (opt) {
+      var delta = opt.e.deltaY;
+      var zoom = canvas.getZoom();
+      zoom *= 0.999 ** delta;
+      if (zoom > 20) zoom = 20;
+      if (zoom < 0.01) zoom = 0.01;
+      canvas.setZoom(zoom);
+      // setCanva(canvas);
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+    });
   };
 
   const zoomIn = () => {
     // setShowBrightnessRange(false);
     // setShowContrastRange(false);
+    Zoom = canvas.getZoom();
     Zoom = Zoom * 1.25;
     canvas.setZoom(Zoom);
 
@@ -165,6 +178,7 @@ function App() {
   const zoomOut = () => {
     // setShowBrightnessRange(false);
     // setShowContrastRange(false);
+    Zoom = canvas.getZoom();
     Zoom = Zoom * 0.8;
     canvas.setZoom(Zoom);
 
