@@ -22,9 +22,9 @@ function App() {
   let mousePressed = false;
   // let f = fabric.Image.filters;
 
-  var img = document.querySelector("#c");
-  var filterControls = document.querySelectorAll("input[type=range]");
   function applyFilter() {
+    var img = document.querySelector("#c");
+    var filterControls = document.querySelectorAll("input[type=range]");
     var computedFilters = "";
     filterControls.forEach(function (item, index) {
       computedFilters +=
@@ -168,7 +168,7 @@ function App() {
     // setShowBrightnessRange(false);
     // setShowContrastRange(false);
     Zoom = canvas.getZoom();
-    Zoom = Zoom * 1.25;
+    Zoom *= 1.25;
     canvas.setZoom(Zoom);
 
     // console.log("canvas zoom in", canvas);
@@ -179,7 +179,7 @@ function App() {
     // setShowBrightnessRange(false);
     // setShowContrastRange(false);
     Zoom = canvas.getZoom();
-    Zoom = Zoom * 0.8;
+    Zoom *= 0.8;
     canvas.setZoom(Zoom);
 
     // console.log("canvas zoom out", canvas);
@@ -209,11 +209,13 @@ function App() {
   // };
 
   function adjustBrightness(): void {
+    // setContrastRange(contrastRange);
     setShowBrightnessRange(true);
     setShowContrastRange(false);
   }
 
   function adjustContrast(): void {
+    // setBrightnessRange(brightnessRange);
     setShowBrightnessRange(false);
     setShowContrastRange(true);
   }
