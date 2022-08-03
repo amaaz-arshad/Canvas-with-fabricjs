@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./App.css";
 import imageData from "./data/ImageData";
@@ -21,51 +22,38 @@ function App() {
   let mousePressed = false;
   let f = fabric.Image.filters;
 
-  // function applyFilter(index, filter) {
-  //   var obj = canvas.getActiveObject();
-  //   obj.filters[index] = filter;
-  //   obj.applyFilters(canvas.renderAll.bind(canvas));
-  // }
-
-  // var f = fabric.Image.filters;
-
-  // document.getElementById("input").onchange = function() {
-  //   applyFilter(0, new f.Contrast({
-  //     contrast: parseInt(document.getElementById("input").value, 10)
-  //   }));
-  // };
-
   useLayoutEffect(() => {
     // setIsImage(true);
-    console.log("first use effect run");
 
     canvas = new fabric.Canvas("c", {
       height: 400,
       width: 600,
       defaultCursor: "grab",
       selection: false,
-      // backgroundColor: "yellow",
     });
     // canvas.renderAll();
-    // console.log(canvas);
-    // setCanva(canvas);
     // canvas.setHeight(400);
     // canvas.setWidth(600);
 
-    // Left Image
-    fabric.Image.fromURL(imageData[0], (img) => {
-      let oimg = img.set({
-        left: 0,
-        top: 0,
-        // Scale image to fit width / height ?
-      });
-      img.scaleToHeight(400);
-      img.scaleToWidth(600);
-      canvas.add(img).renderAll();
-      // canvas.setActiveObject(oimg);
-      Zoom = 1;
-      // setCanvas(canvas);
-    });
+    fabric.Image.fromURL(
+      imageData[0],
+      (img) => {
+        let oimg = img.set({
+          left: 0,
+          top: 0,
+          // Scale image to fit width / height ?
+        });
+        img.scaleToHeight(400);
+        img.scaleToWidth(600);
+        canvas.add(img).renderAll();
+        // canvas.setActiveObject(oimg);
+        Zoom = 1;
+        // setCanvas(canvas);
+      },
+      {
+        crossOrigin: "anonymous",
+      }
+    );
     // canvas.renderAll();
 
     // var filter = new fabric.Image.filters.Brightness({
@@ -119,29 +107,29 @@ function App() {
     canvas = new fabric.Canvas("c", {
       height: 400,
       width: 600,
-      // backgroundColor: "yellow",
     });
     // canvas.renderAll();
 
-    // setCanvas(canvas);
-
-    // Left Image
-    fabric.Image.fromURL(image, (img) => {
-      let oimg = img.set({
-        left: 0,
-        top: 0,
-        // Scale image to fit width / height ?
-      });
-      img.scaleToHeight(400);
-      img.scaleToWidth(600);
-      canvas.add(img).renderAll();
-      // canvas.setActiveObject(oimg);
-      canvas.centerObject(img);
-      Zoom = 1;
-      // canvas.renderAll();
-
-      // setCanvas(canvas);
-    });
+    fabric.Image.fromURL(
+      image,
+      (img) => {
+        let oimg = img.set({
+          left: 0,
+          top: 0,
+          // Scale image to fit width / height ?
+        });
+        img.scaleToHeight(400);
+        img.scaleToWidth(600);
+        canvas.add(img).renderAll();
+        // canvas.setActiveObject(oimg);
+        canvas.centerObject(img);
+        Zoom = 1;
+        // canvas.renderAll();
+      },
+      {
+        crossOrigin: "anonymous",
+      }
+    );
   };
 
   const zoomIn = () => {
@@ -177,7 +165,6 @@ function App() {
   //   obj.filters[index] = filter;
   //   obj.applyFilters(canvas.renderAll.bind(canvas));
   // }
-
   // document.getElementById("input").onchange = function () {
   //   applyFilter(
   //     0,
@@ -221,32 +208,52 @@ function App() {
             {/* {isImage ? ( */}
             <>
               <canvas id="c"></canvas>
-              {showBrightnessRange && (
-                <div className="range">
-                  <label
-                    style={{ position: "relative", top: "-3px" }}
-                    className="me-4"
-                  >
-                    Brightness
-                  </label>
+              {/* <input
+                id="input"
+                type="range"
+                min="-255"
+                max="255"
+                value={range}
+                step="1"
+                onChange={function (e) {
+                  setRange(e.target.value);
+                  applyFilter(
+                    0,
+                    new f.Contrast({
+                      contrast: parseInt(
+                        document.getElementById("input").value,
+                        10
+                      ),
+                    })
+                  );
+                }}
+              /> */}
+              {/* {showBrightnessRange && ( */}
+              {/* <div className="range">
+                <label
+                  style={{ position: "relative", top: "-3px" }}
+                  className="me-4"
+                >
+                  Brightness
+                </label>
 
-                  <input
-                    id="bRange"
-                    type="range"
-                    min="-255"
-                    max="255"
-                    value="0"
-                    // onChange={function () {
-                    //   applyFilter(
-                    //     0,
-                    //     new f.Contrast({
-                    //       contrast: parseInt(range.toString(), 10),
-                    //     })
-                    //   );
-                    // }}
-                  />
-                </div>
-              )}
+                <input
+                  id="bRange"
+                  type="range"
+                  min="-255"
+                  max="255"
+                  value={range}
+                  onChange={function () {
+                    applyFilter(
+                      0,
+                      new f.Contrast({
+                        contrast: parseInt(range.toString(), 10),
+                      })
+                    );
+                  }}
+                />
+              </div> */}
+              {/* )} */}
               {showContrastRange && (
                 <div className="range">
                   <label
