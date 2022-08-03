@@ -45,8 +45,10 @@ function App() {
         });
         img.scaleToHeight(400);
         img.scaleToWidth(600);
-        canvas.add(img).renderAll();
-        // canvas.setActiveObject(oimg);
+        // canvas.add(img).renderAll();
+        canvas.backgroundImage = img;
+        canvas.renderAll();
+        canvas.setActiveObject(oimg);
         Zoom = 1;
         // setCanvas(canvas);
       },
@@ -120,9 +122,12 @@ function App() {
         });
         img.scaleToHeight(400);
         img.scaleToWidth(600);
-        canvas.add(img).renderAll();
+        // canvas.add(img).renderAll();
+        canvas.backgroundImage = img;
+        canvas.renderAll();
+
         // canvas.setActiveObject(oimg);
-        canvas.centerObject(img);
+        // canvas.centerObject(img);
         Zoom = 1;
         // canvas.renderAll();
       },
