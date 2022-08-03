@@ -7,7 +7,6 @@ import { fabric } from "fabric";
 import ts from "typescript";
 
 function Canvas() {
-  //   const [isImage, setIsImage] = useState<boolean>(false);
   const [image, setImage] = useState<string>("");
   const [showBrightnessRange, setShowBrightnessRange] =
     useState<boolean>(false);
@@ -68,6 +67,7 @@ function Canvas() {
             {image ? (
               <>
                 <img id="imageCanvas" src={image} width="100%" />
+
                 {showBrightnessRange && (
                   <div className="range">
                     <label
@@ -84,8 +84,8 @@ function Canvas() {
                       max="200"
                       step="1"
                       value={brightnessRange}
-                      onChange={(e) => {
-                        setBrightnessRange(e.target.value);
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setBrightnessRange(parseInt(e.target.value));
                         applyFilter();
                       }}
                       data-filter="brightness"
@@ -109,8 +109,8 @@ function Canvas() {
                       max="200"
                       step="1"
                       value={contrastRange}
-                      onChange={(e) => {
-                        setContrastRange(e.target.value);
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setContrastRange(parseInt(e.target.value));
                         applyFilter();
                       }}
                       data-filter="contrast"

@@ -4,14 +4,14 @@ import "./App.css";
 import imageData from "./data/ImageData";
 import { createContext } from "react";
 import { fabric } from "fabric";
-import ts from "typescript";
 
 function App() {
   const [isImage, setIsImage] = useState<boolean>(false);
   const [showBrightnessRange, setShowBrightnessRange] =
     useState<boolean>(false);
   const [showContrastRange, setShowContrastRange] = useState<boolean>(false);
-  const [range, setRange] = useState<number>(0);
+  const [brightnessRange, setBrightnessRange] = useState<number>(100);
+  const [contrastRange, setContrastRange] = useState<number>(100);
   // const [mousePressed, setMousePressed] = useState<boolean>(false);
   // const [image, setImage] = useState<string>(imageData[0]);
   // const [Zoom, setZoom] = useState(1);
@@ -20,7 +20,22 @@ function App() {
   let Zoom = 1;
   let canvas: fabric.Canvas;
   let mousePressed = false;
-  let f = fabric.Image.filters;
+  // let f = fabric.Image.filters;
+
+  var img = document.querySelector("#c");
+  var filterControls = document.querySelectorAll("input[type=range]");
+  function applyFilter() {
+    var computedFilters = "";
+    filterControls.forEach(function (item, index) {
+      computedFilters +=
+        item.getAttribute("data-filter") +
+        "(" +
+        item.value +
+        item.getAttribute("data-scale") +
+        ") ";
+    });
+    img.style.filter = computedFilters;
+  }
 
   useLayoutEffect(() => {
     // setIsImage(true);
@@ -28,17 +43,17 @@ function App() {
     canvas = new fabric.Canvas("c", {
       height: 400,
       width: 600,
-      defaultCursor: "grab",
       selection: false,
+      defaultCursor: "grab",
     });
-    // canvas.renderAll();
+    canvas.renderAll();
     // canvas.setHeight(400);
     // canvas.setWidth(600);
 
     fabric.Image.fromURL(
       imageData[0],
       (img) => {
-        let oimg = img.set({
+        img.set({
           left: 0,
           top: 0,
           // Scale image to fit width / height ?
@@ -48,15 +63,15 @@ function App() {
         // canvas.add(img).renderAll();
         canvas.backgroundImage = img;
         canvas.renderAll();
-        canvas.setActiveObject(oimg);
+        // canvas.setActiveObject(img);
         Zoom = 1;
         // setCanvas(canvas);
-      },
-      {
-        crossOrigin: "anonymous",
       }
+      // {
+      //   crossOrigin: "anonymous",
+      // }
     );
-    // canvas.renderAll();
+    canvas.renderAll();
 
     // var filter = new fabric.Image.filters.Brightness({
     //   brightness: 0.05,
@@ -110,12 +125,12 @@ function App() {
       height: 400,
       width: 600,
     });
-    // canvas.renderAll();
+    canvas.renderAll();
 
     fabric.Image.fromURL(
       image,
       (img) => {
-        let oimg = img.set({
+        img.set({
           left: 0,
           top: 0,
           // Scale image to fit width / height ?
@@ -124,16 +139,16 @@ function App() {
         img.scaleToWidth(600);
         // canvas.add(img).renderAll();
         canvas.backgroundImage = img;
+        Zoom = 1;
         canvas.renderAll();
 
-        // canvas.setActiveObject(oimg);
+        // canvas.setActiveObject(img);
         // canvas.centerObject(img);
-        Zoom = 1;
         // canvas.renderAll();
-      },
-      {
-        crossOrigin: "anonymous",
       }
+      // {
+      //   crossOrigin: "anonymous",
+      // }
     );
   };
 
@@ -201,6 +216,11 @@ function App() {
                 onClick={() => {
                   // setImage(img);
                   setBgImage(img);
+                  setBrightnessRange(100);
+                  setContrastRange(100);
+                  setShowBrightnessRange(false);
+                  setShowContrastRange(false);
+                  applyFilter();
                 }}
               >
                 <img src={img} width="100%" />
@@ -233,32 +253,32 @@ function App() {
                   );
                 }}
               /> */}
-              {/* {showBrightnessRange && ( */}
-              {/* <div className="range">
-                <label
-                  style={{ position: "relative", top: "-3px" }}
-                  className="me-4"
-                >
-                  Brightness
-                </label>
+              {showBrightnessRange && (
+                <div className="range">
+                  <label
+                    style={{ position: "relative", top: "-3px" }}
+                    className="me-4"
+                  >
+                    Brightness
+                  </label>
 
-                <input
-                  id="bRange"
-                  type="range"
-                  min="-255"
-                  max="255"
-                  value={range}
-                  onChange={function () {
-                    applyFilter(
-                      0,
-                      new f.Contrast({
-                        contrast: parseInt(range.toString(), 10),
-                      })
-                    );
-                  }}
-                />
-              </div> */}
-              {/* )} */}
+                  <input
+                    id="input-brightness"
+                    type="range"
+                    min="0"
+                    max="200"
+                    step="1"
+                    value={brightnessRange}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setBrightnessRange(parseInt(e.target.value));
+                      applyFilter();
+                    }}
+                    data-filter="brightness"
+                    data-scale="%"
+                  />
+                </div>
+              )}
+
               {showContrastRange && (
                 <div className="range">
                   <label
@@ -267,23 +287,24 @@ function App() {
                   >
                     Contrast
                   </label>
+
                   <input
-                    id="input"
+                    id="input-contrast"
                     type="range"
-                    min="-255"
-                    max="255"
-                    value="0"
-                    // onChange={function () {
-                    //   applyFilter(
-                    //     0,
-                    //     new f.Contrast({
-                    //       contrast: parseInt(range.toString(), 10),
-                    //     })
-                    //   );
-                    // }}
+                    min="0"
+                    max="200"
+                    step="1"
+                    value={contrastRange}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setContrastRange(parseInt(e.target.value));
+                      applyFilter();
+                    }}
+                    data-filter="contrast"
+                    data-scale="%"
                   />
                 </div>
               )}
+
               <div className="buttons">
                 <button onClick={() => zoomIn()} className="btn btn-primary">
                   Zoom in
@@ -291,8 +312,18 @@ function App() {
                 <button onClick={() => zoomOut()} className="btn btn-primary">
                   Zoom out
                 </button>
-                <button className="btn btn-primary">Adjust brightness</button>
-                <button className="btn btn-primary">Adjust contrast</button>
+                <button
+                  onClick={() => adjustBrightness()}
+                  className="btn btn-primary"
+                >
+                  Adjust brightness
+                </button>
+                <button
+                  onClick={() => adjustContrast()}
+                  className="btn btn-primary"
+                >
+                  Adjust contrast
+                </button>
               </div>
             </>
             {/* ) : (
